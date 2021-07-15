@@ -3,6 +3,7 @@
 #include <math.h>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 using namespace std;
 int coinSums();
 int pandigitalNumber();
@@ -15,6 +16,7 @@ int pandigitalMultiples();
 int rightTriangle();
 int ChampersnowneConst();
 int pandigitalPrime();
+int triangleWords();
 
 bool isPandigital(string num);
 template <typename Value>
@@ -30,7 +32,7 @@ bool isSequencedFromOne(int number);
 
 int main()
 {
-  cout << pandigitalPrime();
+  cout << triangleWords();
   return 0;
 }
 
@@ -646,7 +648,53 @@ int pandigitalPrime()
       }
     }
     sixMultiple--;
-     multipleS = sixMultiple * 6 + 1;
-     multipleP = sixMultiple * 6 - 1;
+    multipleS = sixMultiple * 6 + 1;
+    multipleP = sixMultiple * 6 - 1;
   }
+}
+
+//Problem 42
+int triangleWords()
+{
+  string text;
+  ifstream file("words.txt");
+  vector<string> words;
+  vector<int> triangles = {1};
+  int number = 0;
+  while (getline(file, text, '"'))
+  {
+    if (text != "," && text != "")
+    {
+      words.push_back(text);
+    }
+  }
+
+  for_each(
+      words.begin(), words.end(), [&number, &triangles](string word)
+      {
+        int taille = 0;
+        for_each(word.begin(), word.end(), [&taille](char c)
+                 { taille += c - 'A' + 1; });
+        if (exists(triangles, taille))
+        {
+          number++;
+        }
+        else
+        {
+          int last = triangles.size();
+          int triangle = 0;
+          while (triangle < taille)
+          {
+            last++;
+            triangle = (last * (last + 1)) / 2;
+            triangles.push_back(triangle);
+            if (triangle == taille)
+            {
+              number++;
+            }
+          }
+        }
+      });
+
+  return number;
 }
