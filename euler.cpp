@@ -17,6 +17,7 @@ int rightTriangle();
 int ChampersnowneConst();
 int pandigitalPrime();
 int triangleWords();
+long subStringDiv();
 
 bool isPandigital(string num);
 template <typename Value>
@@ -29,10 +30,12 @@ string convertToBinary(int number);
 bool isPalindromic(string value);
 bool isTruncatable(int number);
 bool isSequencedFromOne(int number);
+long generator(string number);
+long counter = 0;
 
 int main()
 {
-  cout << triangleWords();
+  cout << subStringDiv();
   return 0;
 }
 
@@ -697,4 +700,59 @@ int triangleWords()
       });
 
   return number;
+}
+
+//Problem 43
+long subStringDiv(){
+  return generator("");
+}
+
+long generator(string number)
+{
+  if (number.length() == 10)
+  {
+    int div24 = stoi(number.substr(1, 3));
+    int div35 = stoi(number.substr(2, 3));
+    int div46 = stoi(number.substr(3, 3));
+    int div57 = stoi(number.substr(4, 3));
+    int div68 = stoi(number.substr(5, 3));
+    int div79 = stoi(number.substr(6, 3));
+    int div810 = stoi(number.substr(7, 3));
+    if (div24 % 2 == 0)
+    {
+      if (div35 % 3 == 0)
+      {
+        if (div46 % 5 == 0)
+        {
+          if (div57 % 7 == 0)
+          {
+            if (div68 % 11 == 0)
+            {
+              if (div79 % 13 == 0)
+              {
+                if (div810 % 17 == 0)
+                {
+                  return stol(number);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    return 0;
+  }
+  else
+  {
+    long sum = 0;
+    for (int i = 0; i < 10; i++)
+    {
+      char c = i + '0';
+      if (!containsChar(number, c))
+      {
+        sum += generator(number + to_string(i));
+      }
+    }
+    return sum;
+  }
 }
