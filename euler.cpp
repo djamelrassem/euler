@@ -18,6 +18,7 @@ int ChampersnowneConst();
 int pandigitalPrime();
 int triangleWords();
 long subStringDiv();
+int pentagonDifference();
 
 bool isPandigital(string num);
 template <typename Value>
@@ -31,11 +32,14 @@ bool isPalindromic(string value);
 bool isTruncatable(int number);
 bool isSequencedFromOne(int number);
 long generator(string number);
+int pentagon(int n);
+template <typename Value>
+void showVector(vector<Value> v);
 long counter = 0;
 
 int main()
 {
-  cout << subStringDiv();
+  cout << pentagonDifference();
   return 0;
 }
 
@@ -703,7 +707,8 @@ int triangleWords()
 }
 
 //Problem 43
-long subStringDiv(){
+long subStringDiv()
+{
   return generator("");
 }
 
@@ -755,4 +760,61 @@ long generator(string number)
     }
     return sum;
   }
+}
+
+//Problem 44
+
+int pentagonDifference()
+{
+  int j = 0, i, difference = 0, max, minD;
+  vector<int> pentagons = {1, 5};
+  bool stopMaxWhile = false;
+  //Finding the maximum nummber we can have a difference from
+  minD = pentagons[j];
+  while (!stopMaxWhile)
+  {
+    if ((j + 1) < pentagons.size())
+    {
+      for (int i = 0; i < pentagons.size() - 1; i++)
+      {
+        difference = pentagons[j + 1] - pentagons[j];
+        j++;
+        if (difference > minD)
+        {
+          stopMaxWhile = true;
+          max = j;
+          break;
+        }
+      }
+      j++;
+    }
+    else
+    {
+      pentagons.push_back(pentagon(j+1));
+      difference = pentagons[j] - pentagons[j-1];
+      j++;
+      if (difference > minD)
+      {
+        stopMaxWhile = true;
+        max = j;
+      }
+      showVector(pentagons);
+    }
+  }
+  return 0;
+}
+
+int pentagon(int n)
+{
+  return n * (3 * n - 1) / 2;
+}
+
+template <typename Value>
+void showVector(vector<Value> v)
+{
+  cout << "{",
+      for_each(v.begin(), v.end() - 1, [](Value value)
+               { cout << value << ","; });
+  cout << v[v.size() - 1];
+  cout << "}\n";
 }
